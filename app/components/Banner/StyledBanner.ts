@@ -12,7 +12,7 @@ const StyledBanner = styled.div`
   font-weight: normal;
   text-align: center;
   position: absolute;
-  top: 38%;
+  top: 50%;
   left: 30%;
 `;
 

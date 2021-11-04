@@ -3,6 +3,8 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+
 require("dotenv").config({ path: "./.env" });
 
 const LAUNCH_COMMAND = process.env.npm_lifecycle_event;
@@ -34,6 +36,10 @@ const baseLoaders = [
         },
       },
     },
+  },
+  {
+    test: /\.(jpe?g|png|gif|svg)$/i,
+    use: [{ loader: "file-loader" }],
   },
 ];
 
@@ -119,7 +125,13 @@ const htmlWebpackPlugin = new HtmlWebpackPlugin({
   ...additionalHtmlPlugConfig,
 });
 
-const commonPlugins = [webpackDefinePlugin, htmlWebpackPlugin];
+const cleanWebpackPlugin = new CleanWebpackPlugin();
+
+const commonPlugins = [
+  webpackDefinePlugin,
+  htmlWebpackPlugin,
+  cleanWebpackPlugin,
+];
 const devPlugins = [];
 const prodPlugins = [];
 
