@@ -1,5 +1,5 @@
-import { css } from "@emotion/react";
-import emotionNormalize from "emotion-normalize";
+import { css } from '@emotion/react';
+import emotionNormalize from 'emotion-normalize';
 
 const GlobalCss = css`
   ${emotionNormalize}

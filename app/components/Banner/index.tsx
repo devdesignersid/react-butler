@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import StyledBanner from "./StyledBanner";
+import StyledBanner from './StyledBanner';
 
 export interface Props {
   message: string;

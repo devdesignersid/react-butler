@@ -1,9 +1,9 @@
-import * as React from "react";
-import { Global } from "@emotion/react";
+import * as React from 'react';
+import { Global } from '@emotion/react';
 
-import AppContainer from "./AppContiner";
-import { GlobalCss } from "@/styles";
-import { Banner, Logo } from "@/components";
+import AppContainer from './AppContiner';
+import { GlobalCss } from '@/styles';
+import { Banner, Logo } from '@/components';
 
 const App = () => (
   <AppContainer>

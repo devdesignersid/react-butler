@@ -1,37 +1,36 @@
-const webpack = require("webpack");
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const TerserPlugin = require("terser-webpack-plugin");
-const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+/* eslint-disable */
+const webpack = require('webpack');
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
-require("dotenv").config({ path: "./.env" });
+require('dotenv').config({ path: './.env' });
 
 const LAUNCH_COMMAND = process.env.npm_lifecycle_event;
-const isProduction = LAUNCH_COMMAND === "prod";
+const isProduction = LAUNCH_COMMAND === 'prod';
 const shouldUseSourceMaps = isProduction;
 
 const PATHS = {
-  app: path.join(__dirname, "app"),
-  build: path.join(__dirname, "build"),
+  app: path.join(__dirname, 'app'),
+  build: path.join(__dirname, 'build'),
 };
 
 const prodEntry = [PATHS.app];
-const devEntry = [
-  ...prodEntry,
-  require.resolve("webpack-dev-server/client") + "?/",
-];
+const devEntry = [...prodEntry, require.resolve('webpack-dev-server/client') + '?/'];
 
 const baseLoaders = [
   {
     test: /\.(ts|tsx)$/,
     exclude: /(node_modules|bower_components)/,
     use: {
-      loader: "swc-loader",
+      loader: 'swc-loader',
       options: {
         jsc: {
           parser: {
-            syntax: "typescript",
+            syntax: 'typescript',
           },
         },
       },
@@ -39,7 +38,7 @@ const baseLoaders = [
   },
   {
     test: /\.(jpe?g|png|gif|svg)$/i,
-    use: [{ loader: "file-loader" }],
+    use: [{ loader: 'file-loader' }],
   },
 ];
 
@@ -62,7 +61,7 @@ const terserPlugin = new TerserPlugin({
 });
 
 const tsconfigPathsPlugin = new TsconfigPathsPlugin({
-  baseUrl: "app",
+  baseUrl: 'app',
 });
 
 const resolvePlugins = [tsconfigPathsPlugin];
@@ -71,9 +70,9 @@ const resolvePlugins = [tsconfigPathsPlugin];
 const baseConfigs = {
   entry: isProduction ? prodEntry : devEntry,
   output: {
-    filename: "[name].[contenthash].bundle.js",
+    filename: '[name].[contenthash].bundle.js',
     path: PATHS.build,
-    publicPath: "/",
+    publicPath: '/',
   },
   module: {
     strictExportPresence: true,
@@ -81,14 +80,14 @@ const baseConfigs = {
   },
   resolve: {
     plugins: resolvePlugins,
-    extensions: [".ts", ".tsx", ".js", ".jsx", ".json"],
-    modules: [path.resolve("."), "node_modules"],
+    extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
+    modules: [path.resolve('.'), 'node_modules'],
   },
   optimization: {
     minimize: isProduction,
     minimizer: [terserPlugin],
     splitChunks: {
-      chunks: "async",
+      chunks: 'async',
       name: false,
     },
     runtimeChunk: true,
@@ -96,7 +95,7 @@ const baseConfigs = {
 };
 
 const webpackDefinePlugin = new webpack.DefinePlugin({
-  "process.env": JSON.stringify(process.env),
+  'process.env': JSON.stringify(process.env),
 });
 
 const defaultHtmlPlugConfig = {
@@ -127,17 +126,21 @@ const htmlWebpackPlugin = new HtmlWebpackPlugin({
 
 const cleanWebpackPlugin = new CleanWebpackPlugin();
 
-const commonPlugins = [
-  webpackDefinePlugin,
-  htmlWebpackPlugin,
-  cleanWebpackPlugin,
-];
+const esLintOptions = {
+  context: 'app',
+  extensions: ['ts', 'tsx'],
+  exclude: ['node_modules', 'build'],
+};
+
+const esLintPlugin = new ESLintPlugin(esLintOptions);
+
+const commonPlugins = [esLintPlugin, webpackDefinePlugin, htmlWebpackPlugin, cleanWebpackPlugin];
 const devPlugins = [];
 const prodPlugins = [];
 
 // Webpack development configuration
 const devConfigs = {
-  devtool: "eval-source-map",
+  devtool: 'eval-source-map',
   plugins: [...commonPlugins, ...devPlugins],
   devServer: {
     hot: true,
@@ -145,7 +148,7 @@ const devConfigs = {
     compress: true,
     historyApiFallback: true,
     client: {
-      logging: "info",
+      logging: 'info',
       overlay: {
         warnings: isProduction,
         errors: true,
@@ -158,7 +161,7 @@ const devConfigs = {
 
 // Webpack production configuration
 const prodConfigs = {
-  devtool: "source-map",
+  devtool: 'source-map',
   bail: isProduction,
   plugins: [...commonPlugins, ...prodPlugins],
 };

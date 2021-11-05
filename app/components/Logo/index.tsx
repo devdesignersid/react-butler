@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 
-import ReactLogo from "@/images/icons/react.png";
-import StyledLogo from "./StyledLogo";
+import ReactLogo from '@/images/icons/react.png';
+import StyledLogo from './StyledLogo';
 
 const Logo = () => <StyledLogo src={ReactLogo} />;
 
