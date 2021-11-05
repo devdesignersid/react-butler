@@ -101,6 +101,7 @@ const webpackDefinePlugin = new webpack.DefinePlugin({
 const defaultHtmlPlugConfig = {
   inject: true,
   title: process.env.HTML_DOCUMENT_TITLE,
+  favicon: `${PATHS.app}/favicon.ico`,
   template: `${PATHS.app}/index.html`,
 };
 
