@@ -1,6 +1,6 @@
 # 🤵‍♂️ React-Butler
 
-A React ⚛️, Typescript & Emotion 💅 starter pack.
+A React ⚛️, Typescript & Emotion 👩‍🎤 starter pack.
 
 
 ## Setup
