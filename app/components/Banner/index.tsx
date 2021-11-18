@@ -12,6 +12,7 @@ const Banner = (props: Props) => (
     <h1>
       {props.host} {props.message}
     </h1>
+    <p>Happy hacking</p>
   </StyledBanner>
 );
 

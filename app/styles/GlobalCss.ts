@@ -1,7 +1,10 @@
 import { css } from '@emotion/react';
 import emotionNormalize from 'emotion-normalize';
 
+import { WebFontFaces, LocalFontFaces } from './FontFaces';
+
 const GlobalCss = css`
+  ${WebFontFaces}
   ${emotionNormalize}
   html,
     body {
@@ -11,6 +14,8 @@ const GlobalCss = css`
     min-height: 100%;
     font-family: Helvetica, Arial, sans-serif;
   }
+
+  ${LocalFontFaces}
 `;
 
 export default GlobalCss;

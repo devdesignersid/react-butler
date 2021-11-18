@@ -7,7 +7,6 @@ const StyledBanner = styled.div`
   width: 512px;
   border-radius: 4px;
   border: 1px solid #5e504b;
-  font-family: 'Roboto Mono', monospace;
   font-size: 12px;
   text-align: center;
   position: absolute;
@@ -15,6 +14,12 @@ const StyledBanner = styled.div`
   left: 30%;
   & > h1 {
     font-weight: normal;
+    font-family: 'RobotoItalic', sans-serif;
+  }
+  & > p {
+    font-family: 'Roboto', serif;
+    font-weight: 300;
+    font-size: 16px;
   }
 `;
 

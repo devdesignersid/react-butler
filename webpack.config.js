@@ -11,11 +11,10 @@ require('dotenv').config({ path: './.env' });
 
 const LAUNCH_COMMAND = process.env.npm_lifecycle_event;
 const isProduction = LAUNCH_COMMAND === 'prod';
-const shouldUseSourceMaps = isProduction;
 
 const PATHS = {
   app: path.join(__dirname, 'app'),
-  build: path.join(__dirname, 'build'),
+  build: path.join(__dirname, 'build')
 };
 
 const prodEntry = [PATHS.app];
@@ -30,38 +29,52 @@ const baseLoaders = [
       options: {
         jsc: {
           parser: {
-            syntax: 'typescript',
-          },
-        },
-      },
-    },
+            syntax: 'typescript'
+          }
+        }
+      }
+    }
   },
   {
     test: /\.(jpe?g|png|gif|svg)$/i,
-    use: [{ loader: 'file-loader' }],
+    type: 'asset/resource'
   },
+  {
+    test: /\.(eot|svg|ttf|woff|woff2|otf)$/,
+    exclude: /(node_modules|bower_components)/,
+    use: [
+      {
+        loader: 'file-loader',
+        options: {
+          name: '[name].[ext]',
+          limit: 10000,
+          mimetype: 'application/font-woff'
+        }
+      }
+    ]
+  }
 ];
 
 const terserPlugin = new TerserPlugin({
   parallel: true,
   terserOptions: {
     parse: {
-      ecma: 8,
+      ecma: 8
     },
     compress: {
       comparisons: false,
       ecma: 5,
-      inline: 2,
+      inline: 2
     },
     output: {
       ascii_only: true,
-      ecma: 5,
-    },
-  },
+      ecma: 5
+    }
+  }
 });
 
 const tsconfigPathsPlugin = new TsconfigPathsPlugin({
-  baseUrl: 'app',
+  baseUrl: 'app'
 });
 
 const resolvePlugins = [tsconfigPathsPlugin];
@@ -72,37 +85,37 @@ const baseConfigs = {
   output: {
     filename: '[name].[contenthash].bundle.js',
     path: PATHS.build,
-    publicPath: '/',
+    publicPath: '/'
   },
   module: {
     strictExportPresence: true,
-    rules: [{ parser: { requireEnsure: false } }, ...baseLoaders],
+    rules: [{ parser: { requireEnsure: false } }, ...baseLoaders]
   },
   resolve: {
     plugins: resolvePlugins,
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
-    modules: [path.resolve('.'), 'node_modules'],
+    modules: [path.resolve('.'), 'node_modules']
   },
   optimization: {
     minimize: isProduction,
     minimizer: [terserPlugin],
     splitChunks: {
       chunks: 'async',
-      name: false,
+      name: false
     },
-    runtimeChunk: true,
-  },
+    runtimeChunk: true
+  }
 };
 
 const webpackDefinePlugin = new webpack.DefinePlugin({
-  'process.env': JSON.stringify(process.env),
+  'process.env': JSON.stringify(process.env)
 });
 
 const defaultHtmlPlugConfig = {
   inject: true,
   title: process.env.HTML_DOCUMENT_TITLE,
   favicon: `${PATHS.app}/favicon.ico`,
-  template: `${PATHS.app}/index.html`,
+  template: `${PATHS.app}/index.html`
 };
 
 const additionalHtmlPlugConfig = isProduction && {
@@ -116,13 +129,13 @@ const additionalHtmlPlugConfig = isProduction && {
     collapseWhitespace: true,
     removeEmptyAttributes: true,
     removeReduntantAttributes: true,
-    removeStyleLinkTypeAttributes: true,
-  },
+    removeStyleLinkTypeAttributes: true
+  }
 };
 
 const htmlWebpackPlugin = new HtmlWebpackPlugin({
   ...defaultHtmlPlugConfig,
-  ...additionalHtmlPlugConfig,
+  ...additionalHtmlPlugConfig
 });
 
 const cleanWebpackPlugin = new CleanWebpackPlugin();
@@ -130,7 +143,7 @@ const cleanWebpackPlugin = new CleanWebpackPlugin();
 const esLintOptions = {
   context: 'app',
   extensions: ['ts', 'tsx'],
-  exclude: ['node_modules', 'build'],
+  exclude: ['node_modules', 'build']
 };
 
 const esLintPlugin = new ESLintPlugin(esLintOptions);
@@ -152,25 +165,25 @@ const devConfigs = {
       logging: 'info',
       overlay: {
         warnings: isProduction,
-        errors: true,
+        errors: true
       },
       progress: true,
-      reconnect: true,
-    },
-  },
+      reconnect: true
+    }
+  }
 };
 
 // Webpack production configuration
 const prodConfigs = {
   devtool: 'source-map',
   bail: isProduction,
-  plugins: [...commonPlugins, ...prodPlugins],
+  plugins: [...commonPlugins, ...prodPlugins]
 };
 
 const mainConfig = isProduction
   ? {
       ...baseConfigs,
-      ...prodConfigs,
+      ...prodConfigs
     }
   : { ...baseConfigs, ...devConfigs };
 
