@@ -8,14 +8,17 @@
     "prod": "webpack --mode production",
     "lint": "eslint .",
     "lint:fix": "eslint --fix --ext .ts,.tsx .",
-    "test": "jest --watch ./test"
+    "test": "jest --watch --env=jsdom"
   },
   "keywords": [],
   "author": "Siddharth S Kumar",
   "license": "ISC",
   "devDependencies": {
+    "@emotion/jest": "^11.7.1",
     "@swc/core": "^1.2.121",
     "@swc/jest": "^0.2.15",
+    "@testing-library/react": "^12.1.2",
+    "@types/jest": "^27.0.3",
     "@types/react": "^17.0.34",
     "@types/react-dom": "^17.0.11",
     "@types/stylis": "^4.0.2",

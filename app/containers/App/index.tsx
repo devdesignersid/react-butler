@@ -17,7 +17,7 @@ const App = () => {
       <AppContainer>
         <Global styles={GlobalCss} />
         <Logo />
-        <Banner host="🤵‍♂️ " message="is ready to serve!" />
+        <Banner host="Butler " message="is ready to serve!" />
       </AppContainer>
     </CacheProvider>
   );
